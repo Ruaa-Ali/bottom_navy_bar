@@ -28,6 +28,8 @@ class BottomNavyBar extends StatelessWidget {
     required this.items,
     required this.onItemSelected,
     this.curve = Curves.linear,
+    this.selectedItemBorder,
+    this.unselectedItemBorder,
   })  : assert(items.length >= 2 && items.length <= 5),
         super(key: key);
 
@@ -90,6 +92,12 @@ class BottomNavyBar extends StatelessWidget {
   /// Whether this navigation bar should show a Inactive titles. Defaults to false.
   final bool showInactiveTitle;
 
+  /// to show a border around selected item
+  final BoxBorder? selectedItemBorder;
+
+  /// to show border around unselected items
+  final BoxBorder? unselectedItemBorder;
+
   @override
   Widget build(BuildContext context) {
     final bgColor = backgroundColor ??
@@ -126,6 +134,9 @@ class BottomNavyBar extends StatelessWidget {
                   isSelected: index == selectedIndex,
                   backgroundColor: bgColor,
                   itemCornerRadius: itemCornerRadius,
+                  itemBorder: index == selectedIndex
+                      ? selectedItemBorder
+                      : unselectedItemBorder,
                   animationDuration: animationDuration,
                   itemPadding: itemPadding,
                   curve: curve,
@@ -150,6 +161,7 @@ class _ItemWidget extends StatelessWidget {
   final EdgeInsets itemPadding;
   final Curve curve;
   final bool showInactiveTitle;
+  final BoxBorder? itemBorder;
 
   const _ItemWidget({
     Key? key,
@@ -162,6 +174,7 @@ class _ItemWidget extends StatelessWidget {
     required this.itemPadding,
     required this.showInactiveTitle,
     this.curve = Curves.linear,
+    this.itemBorder,
   }) : super(key: key);
 
   @override
@@ -186,6 +199,7 @@ class _ItemWidget extends StatelessWidget {
                   item.activeColor.withOpacity(0.2))
               : backgroundColor,
           borderRadius: BorderRadius.circular(itemCornerRadius),
+          border: itemBorder,
         ),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
